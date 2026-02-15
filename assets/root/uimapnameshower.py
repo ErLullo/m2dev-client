@@ -16,48 +16,44 @@ class MapNameShower(ui.ExpandedImageBox):
 
 	def __init__(self):
 		self.MAP_NAME_IMAGE =	{
-						"metin2_map_a1"  : LOCALE_PATH+"a1.tga",
-						"map_a2"         : LOCALE_PATH+"a2.tga",
-						"metin2_map_a3"  : LOCALE_PATH+"a3.tga",
-						"metin2_map_b1"  : LOCALE_PATH+"b1.tga",
-						"map_b2"         : LOCALE_PATH+"b2.tga",
-						"metin2_map_b3"  : LOCALE_PATH+"b3.tga",
-						"metin2_map_c1"  : LOCALE_PATH+"c1.tga",
-						"map_c2"         : LOCALE_PATH+"c2.tga",
-						"metin2_map_c3"  : LOCALE_PATH+"c3.tga",
-						"map_n_snowm_01" : LOCALE_PATH+"snow1.tga",
-						"metin2_map_deviltower1" : LOCALE_PATH+"devil1_title.tga",
-						"metin2_map_n_flame_01" : LOCALE_PATH+"frame1.tga",
-						"metin2_map_n_desert_01" : LOCALE_PATH+"desert1.tga",
-						"metin2_map_milgyo" : LOCALE_PATH+"milgyo.tga",
-						"metin2_map_monkeydungeon" : LOCALE_PATH+"monkey1.tga",
-						"metin2_map_monkeydungeon_02" : LOCALE_PATH+"monkey2.tga",
-						"metin2_map_monkeydungeon_03" : LOCALE_PATH+"monkey3.tga",
-						"metin2_map_guild_01" : LOCALE_PATH+"guild1.tga",
-						"metin2_map_guild_02" : LOCALE_PATH+"guild2.tga",
-						"metin2_map_guild_03" : LOCALE_PATH+"guild3.tga",
-						"metin2_map_trent" : LOCALE_PATH+"trent.tga",
-						"metin2_map_trent02" : LOCALE_PATH+"trent02.tga",
-						"season2/map_n_snowm_02": LOCALE_PATH+"snow2.tga",
-						"season2/metin2_map_a2_1": LOCALE_PATH+"a2_2.tga",
-						"season2/metin2_map_n_desert_02": LOCALE_PATH+"desert2.tga",
-						"season2/metin2_map_n_flame_02": LOCALE_PATH+"frame2.tga",
-						"season2/metin2_map_milgyo_a": LOCALE_PATH+"milgyo2.TGA",
-						"season2/metin2_map_trent_a": LOCALE_PATH+"trent_a.tga",
-						"season2/metin2_map_trent02_a": LOCALE_PATH+"trent02_a.tga",
-						"season2/metin2_map_skipia_dungeon_01": LOCALE_PATH+"skipia.tga",
-						"season2/metin2_map_skipia_dungeon_02": LOCALE_PATH+"skipia.tga",
-						"metin2_map_devilsCatacomb"	:	LOCALE_PATH+"devil_basement.tga",
-						"metin2_guild_village_01"	:	LOCALE_PATH+"a4.tga",
-						"metin2_guild_village_02"	:	LOCALE_PATH+"b4.tga",
-						"metin2_guild_village_03"	:	LOCALE_PATH+"c4.tga",
-						"metin2_map_BayBlackSand"	:	LOCALE_PATH+"bay.tga",
-						"metin2_map_Mt_Thunder"		:	LOCALE_PATH+"thunder.tga",
-						"metin2_map_dawnmistwood"	:	LOCALE_PATH+"dawn.tga",
-						"Metin2_map_CapeDragonHead"	:	LOCALE_PATH+"cape.tga",
-						"metin2_map_spiderdungeon"	:	LOCALE_PATH+"spider1.tga",
-						"metin2_map_spiderdungeon_02"	:	LOCALE_PATH+"spider1.tga",
-						"metin2_map_spiderdungeon_03"		:	LOCALE_PATH+"spider1.tga",
+						"map_n_snowm_01": LOCALE_PATH + "snow1.tga",
+						"map_n_threeway": LOCALE_PATH + "threeway.tga",
+						"metin2_guild_village_01": LOCALE_PATH + "a4.tga",
+						"metin2_guild_village_02": LOCALE_PATH + "b4.tga",
+						"metin2_guild_village_03": LOCALE_PATH + "c4.tga",
+						"metin2_map_a1": LOCALE_PATH + "a1.tga",
+						"metin2_map_a3": LOCALE_PATH + "a3.tga",
+						"metin2_map_b1": LOCALE_PATH + "b1.tga",
+						"metin2_map_b3": LOCALE_PATH + "b3.tga",
+						"metin2_map_BayBlackSand": LOCALE_PATH + "bay.tga",
+						"metin2_map_c1": LOCALE_PATH + "c1.tga",
+						"metin2_map_c3": LOCALE_PATH + "c3.tga",
+						"Metin2_map_CapeDragonHead": LOCALE_PATH + "cape.tga",
+						"metin2_map_dawnmistwood": LOCALE_PATH + "dawn.tga",
+						"metin2_map_devilsCatacomb": LOCALE_PATH + "devil_basement.tga",
+						"metin2_map_deviltower1": LOCALE_PATH + "devil1_title.tga",
+						"metin2_map_guild_01": LOCALE_PATH + "guild1.tga",
+						"metin2_map_guild_02": LOCALE_PATH + "guild2.tga",
+						"metin2_map_guild_03": LOCALE_PATH + "guild3.tga",
+						"metin2_map_milgyo": LOCALE_PATH + "milgyo.tga",
+						"metin2_map_monkey_dungeon_11": LOCALE_PATH + "monkey1.tga",
+						"metin2_map_monkey_dungeon_12": LOCALE_PATH + "monkey1.tga",
+						"metin2_map_monkey_dungeon_13": LOCALE_PATH + "monkey1.tga",
+						"metin2_map_monkeydungeon_02": LOCALE_PATH + "monkey2.tga",
+						"metin2_map_monkeydungeon_03": LOCALE_PATH + "monkey3.tga",
+						"metin2_map_Mt_Thunder": LOCALE_PATH + "thunder.tga",
+						"metin2_map_n_desert_01": LOCALE_PATH + "desert1.tga",
+						"metin2_map_n_flame_01": LOCALE_PATH + "frame1.tga",
+						"metin2_map_n_flame_dungeon_01": LOCALE_PATH + "frame1.tga",
+						"metin2_map_n_snow_dungeon_01": LOCALE_PATH + "snow1.tga",
+						"metin2_map_skipia_dungeon_01": LOCALE_PATH + "skipia.tga",
+						"metin2_map_skipia_dungeon_02": LOCALE_PATH + "skipia.tga",
+						"metin2_map_skipia_dungeon_boss": LOCALE_PATH + "skipia.tga",
+						"metin2_map_spiderdungeon": LOCALE_PATH + "spider1.tga",
+						"metin2_map_spiderdungeon_02": LOCALE_PATH + "spider1.tga",
+						"metin2_map_spiderdungeon_03": LOCALE_PATH + "spider1.tga",
+						"metin2_map_trent": LOCALE_PATH + "trent.tga",
+						"metin2_map_trent02": LOCALE_PATH + "trent02.tga",
 					}
 
 		ui.ExpandedImageBox.__init__(self, "TOP_MOST")
@@ -127,42 +123,62 @@ class MapNameShower(ui.ExpandedImageBox):
 		self.__Initialize()
 
 		if mapName == "metin2_map_deviltower1":
-			self.SetPosition(-60, 80)
-
+			
 			self.floorImage = ui.ExpandedImageBox()
 			self.floorImage.AddFlag("not_pick")
 			self.floorImage.SetWindowHorizontalAlignCenter()
-			self.floorImage.SetPosition(100, 80)
 			self.floorImage.SetAlpha(0.0)
-			self.floorImage.Show()
 
 			try:
 				floor = self.__GetDevilTowerFloor(x, y)
-				print((x, y, floor))
-				self.floorImage.LoadImage(LOCALE_PATH+"devil1_%df.tga" % floor)
+				self.floorImage.LoadImage(LOCALE_PATH + "devil1_%df.tga" % floor)
 			except RuntimeError:
-				self.SetPosition(0, 80)
-				self.floorImage.Hide()
 				self.floorImage = None
+				return
+
+			mapWidth = self.GetWidth()
+			mapHeight = self.GetHeight()
+			floorWidth = self.floorImage.GetWidth()
+			floorHeight = self.floorImage.GetHeight()
+
+			self.SetPosition(0, 80)
+
+			MARGIN_Y = 5
+			self.floorImage.SetPosition(
+				0,
+				80 + int(mapHeight / 2 + MARGIN_Y)
+			)
+
+			self.floorImage.Show()
 
 		if mapName == "metin2_map_devilsCatacomb":
-			self.SetPosition(-75, 80)
 
 			self.floorImage = ui.ExpandedImageBox()
 			self.floorImage.AddFlag("not_pick")
 			self.floorImage.SetWindowHorizontalAlignCenter()
-			self.floorImage.SetPosition(100, 80)
 			self.floorImage.SetAlpha(0.0)
-			self.floorImage.Show()
 
 			try:
 				floor = self.__GetDevilBase(x, y)
-				print((x, y, floor))
-				self.floorImage.LoadImage(LOCALE_PATH+"devil1_%df.tga" % floor)
+				self.floorImage.LoadImage(LOCALE_PATH + "devil1_%df.tga" % floor)
 			except RuntimeError:
-				self.SetPosition(0, 80)
-				self.floorImage.Hide()
 				self.floorImage = None
+				return
+
+			mapWidth = self.GetWidth()
+			mapHeight = self.GetHeight()
+			floorWidth = self.floorImage.GetWidth()
+			floorHeight = self.floorImage.GetHeight()
+
+			self.SetPosition(0, 80)
+
+			MARGIN_Y = 5
+			self.floorImage.SetPosition(
+				0,
+				80 + int(mapHeight / 2 + MARGIN_Y)
+			)
+
+			self.floorImage.Show()
 
 		self.state = self.STATE_FADE_IN
 		self.fadeStartTime = app.GetTime() + 1.0
