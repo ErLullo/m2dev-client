@@ -16,6 +16,7 @@ import time
 import serverCommandParser
 import ime
 import uiScriptLocale
+import debugInfo
 
 # Multi-language hot-reload system
 from uilocaleselector import LocaleSelector
@@ -200,7 +201,8 @@ class LoginWindow(ui.ScriptWindow):
 			dbg.TraceError("SelectCharacterWindow.Open - __LoadScript Error")
 			return
 
-		self.__LoadLoginInfo("loginInfo.xml")
+		# Changed .xml -> .py because pack.Get does not allow .xml extension
+		self.__LoadLoginInfo("loginInfo.py")
 		
 		if app.loggined:
 			self.loginFailureFuncDict = {
@@ -324,7 +326,7 @@ class LoginWindow(ui.ScriptWindow):
 
 	def __LoadChannelInfo(self):
 		try:
-			with open("config/channel.inf") as file:
+			with open("config/channel.inf", "r") as file:
 				lines=file.readlines()
 
 				if len(lines)>0:
@@ -493,6 +495,7 @@ class LoginWindow(ui.ScriptWindow):
 
 		self.pwdEditLine.SetReturnEvent(ui.__mem_func__(self.__OnClickLoginButton))
 		self.pwdEditLine.SetTabEvent(ui.__mem_func__(self.idEditLine.SetFocus))
+		self.pwdEditLine.SetSecretMode(1)
 		return 1
 
 	def __VirtualKeyboard_SetKeys(self, keyCodes):
@@ -587,6 +590,9 @@ class LoginWindow(ui.ScriptWindow):
 		"""Handle locale change - save config, reload, and refresh UI"""
 		import dbg
 
+		# Remember old RTL state to detect direction change
+		wasRTL = app.IsRTL()
+
 		# 1) Save locale code to config/locale.cfg
 		try:
 			import os
@@ -606,7 +612,37 @@ class LoginWindow(ui.ScriptWindow):
 
 		dbg.TraceError("Locale changed successfully, refreshing UI...")
 
-		# 3) Refresh all UI text elements with new locale
+		# 3) If RTL/LTR direction changed, reload UI script in-place
+		#    (different UI scripts, element positioning, text alignment)
+		if wasRTL != app.IsRTL():
+			dbg.TraceError("RTL/LTR direction changed, reloading UI script...")
+
+			# Save current state before Close() destroys references
+			wasOnLoginBoard = self.connectBoard and self.connectBoard.IsShow()
+			savedId = self.idEditLine.GetText() if self.idEditLine else ""
+			savedPwd = self.pwdEditLine.GetText() if self.pwdEditLine else ""
+
+			# Rebuild popup dialog for new direction
+			self.stream.popupWindow.Destroy()
+			self.stream.CreatePopupDialog()
+
+			# Close and reopen with correct RTL/LTR script
+			self.Close()
+			self.Open()
+
+			# Restore the board the user was on
+			if wasOnLoginBoard:
+				self.__OpenLoginBoard()
+				if savedId:
+					self.idEditLine.SetText(savedId)
+				if savedPwd:
+					self.pwdEditLine.SetText(savedPwd)
+			else:
+				self.__RefreshServerList()
+				self.__OpenServerBoard()
+			return
+
+		# 4) Same direction - just refresh text elements
 		self.__RefreshLocaleUI()
 
 	def __RefreshLocaleUI(self):
@@ -670,79 +706,80 @@ class LoginWindow(ui.ScriptWindow):
 			self.localeSelector.Show()
 			self.localeSelector.SetTop()
 
-		except:
-			# import dbg
-			# dbg.TraceError("LoginWindow.__RefreshLocaleUI failed")
-			pass
+		except Exception as e:
+			dbg.TraceError("LoginWindow.__RefreshLocaleUI failed: %s" % str(e))
 
 	def __SetServerInfo(self, name):
 		net.SetServerInfo(name.strip())
 		self.serverInfo.SetText(name)
 
 	def __LoadLoginInfo(self, loginInfoFileName):
+		# This should not work in production
+		if not debugInfo.IsDebugMode():
+			app.loggined = FALSE
+		else:
+			try:
+				loginInfo={}
+				exec(compile(open(loginInfoFileName, "rb").read(), loginInfoFileName, 'exec'), loginInfo)
+			except IOError:
+				print((\
+					"For automatic login, please create" + loginInfoFileName + "file\n"\
+					"\n"\
+					"Contents:\n"\
+					"================================================================\n"\
+					"addr=address\n"\
+					"port=port number\n"\
+					"id=user ID\n"\
+					"pwd=password\n"\
+					"slot=character selection index (if absent or -1, no auto-selection)\n"\
+					"autoLogin=enable auto login\n"
+					"autoSelect=enable auto select\n"
+					"locale=(ymir) works as ymir for LC_Ymir. Works as korea if not specified\n"
+				));
 
-		try:
-			loginInfo={}
-			exec(compile(open(loginInfoFileName, "rb").read(), loginInfoFileName, 'exec'), loginInfo)
-		except IOError:
-			print((\
-				"For automatic login, please create" + loginInfoFileName + "file\n"\
-				"\n"\
-				"Contents:\n"\
-				"================================================================\n"\
-				"addr=address\n"\
-				"port=port number\n"\
-				"id=user ID\n"\
-				"pwd=password\n"\
-				"slot=character selection index (if absent or -1, no auto-selection)\n"\
-				"autoLogin=enable auto login\n"
-				"autoSelect=enable auto select\n"
-				"locale=(ymir) works as ymir for LC_Ymir. Works as korea if not specified\n"
-			));
+			id=loginInfo.get("id", "")
+			pwd=loginInfo.get("pwd", "")
 
-		id=loginInfo.get("id", "")
-		pwd=loginInfo.get("pwd", "")
+			addr=loginInfo.get("addr", "")
+			port=loginInfo.get("port", 0)
+			account_addr=loginInfo.get("account_addr", addr)
+			account_port=loginInfo.get("account_port", port)
 
-		addr=loginInfo.get("addr", "")
-		port=loginInfo.get("port", 0)
-		account_addr=loginInfo.get("account_addr", addr)
-		account_port=loginInfo.get("account_port", port)
+			locale = loginInfo.get("locale", "")
 
-		locale = loginInfo.get("locale", "")
+			if addr and port:
+				net.SetMarkServer(addr, port)
 
-		if addr and port:
-			net.SetMarkServer(addr, port)
+				net.SetServerInfo(addr+":"+str(port))
+				self.serverInfo.SetText("K:"+addr+":"+str(port))
 
-			net.SetServerInfo(addr+":"+str(port))
-			self.serverInfo.SetText("K:"+addr+":"+str(port))
+			slot=loginInfo.get("slot", 0)
+			isAutoLogin=loginInfo.get("auto", 0)
+			isAutoLogin=loginInfo.get("autoLogin", 0)
+			isAutoSelect=loginInfo.get("autoSelect", 0)
 
-		slot=loginInfo.get("slot", 0)
-		isAutoLogin=loginInfo.get("auto", 0)
-		isAutoLogin=loginInfo.get("autoLogin", 0)
-		isAutoSelect=loginInfo.get("autoSelect", 0)
+			self.stream.SetCharacterSlot(slot)
+			self.stream.SetConnectInfo(addr, port, account_addr, account_port)
+			self.stream.isAutoLogin=isAutoLogin
+			self.stream.isAutoSelect=isAutoSelect
 
-		self.stream.SetCharacterSlot(slot)
-		self.stream.SetConnectInfo(addr, port, account_addr, account_port)
-		self.stream.isAutoLogin=isAutoLogin
-		self.stream.isAutoSelect=isAutoSelect
+			self.id = None
+			self.pwd = None		
+			self.loginnedServer = None
+			self.loginnedChannel = None			
+			app.loggined = FALSE
 
-		self.id = None
-		self.pwd = None		
-		self.loginnedServer = None
-		self.loginnedChannel = None			
-		app.loggined = FALSE
+			self.loginInfo = loginInfo
 
-		self.loginInfo = loginInfo
+			if self.id and self.pwd:
+				app.loggined = TRUE
 
-		if self.id and self.pwd:
-			app.loggined = TRUE
-
-		if isAutoLogin:
-			self.Connect(id, pwd)
-			
-			print("==================================================================================")
-			print(("Auto login: %s - %s:%d %s" % (loginInfoFileName, addr, port, id)))
-			print("==================================================================================")
+			if isAutoLogin:
+				self.Connect(id, pwd)
+				
+				print("==================================================================================")
+				print(("Auto login: %s - %s:%d %s" % (loginInfoFileName, addr, port, id)))
+				print("==================================================================================")
 
 		
 	def PopupDisplayMessage(self, msg):

@@ -5,9 +5,55 @@ import localeInfo
 
 LOCALE_PATH = uiScriptLocale.MAPNAME_PATH
 
-class MapNameShower(ui.ExpandedImageBox):
+# Static map name -> image suffix mapping (locale-independent)
+_MAP_NAME_SUFFIXES = {
+	"map_n_snowm_01": "snow1.tga",
+	"map_n_threeway": "threeway.tga",
+	"metin2_guild_village_01": "a4.tga",
+	"metin2_guild_village_02": "b4.tga",
+	"metin2_guild_village_03": "c4.tga",
+	"metin2_map_a1": "a1.tga",
+	"metin2_map_a3": "a3.tga",
+	"metin2_map_b1": "b1.tga",
+	"metin2_map_b3": "b3.tga",
+	"metin2_map_BayBlackSand": "bay.tga",
+	"metin2_map_c1": "c1.tga",
+	"metin2_map_c3": "c3.tga",
+	"Metin2_map_CapeDragonHead": "cape.tga",
+	"metin2_map_dawnmistwood": "dawn.tga",
+	"metin2_map_devilsCatacomb": "devil_basement.tga",
+	"metin2_map_deviltower1": "devil1_title.tga",
+	"metin2_map_guild_01": "guild1.tga",
+	"metin2_map_guild_02": "guild2.tga",
+	"metin2_map_guild_03": "guild3.tga",
+	"metin2_map_milgyo": "milgyo.tga",
+	"metin2_map_monkey_dungeon_11": "monkey1.tga",
+	"metin2_map_monkey_dungeon_12": "monkey1.tga",
+	"metin2_map_monkey_dungeon_13": "monkey1.tga",
+	"metin2_map_monkeydungeon_02": "monkey2.tga",
+	"metin2_map_monkeydungeon_03": "monkey3.tga",
+	"metin2_map_Mt_Thunder": "thunder.tga",
+	"metin2_map_n_desert_01": "desert1.tga",
+	"metin2_map_n_flame_01": "frame1.tga",
+	"metin2_map_n_flame_dungeon_01": "frame1.tga",
+	"metin2_map_n_snow_dungeon_01": "snow1.tga",
+	"metin2_map_skipia_dungeon_01": "skipia.tga",
+	"metin2_map_skipia_dungeon_02": "skipia.tga",
+	"metin2_map_skipia_dungeon_boss": "skipia.tga",
+	"metin2_map_spiderdungeon": "spider1.tga",
+	"metin2_map_spiderdungeon_02": "spider1.tga",
+	"metin2_map_spiderdungeon_03": "spider1.tga",
+	"metin2_map_trent": "trent.tga",
+	"metin2_map_trent02": "trent02.tga",
+}
 
-	MAP_NAME_IMAGE =	{}
+def _RebuildLocaleStrings():
+	global LOCALE_PATH
+	LOCALE_PATH = uiScriptLocale.MAPNAME_PATH
+
+localeInfo.RegisterReloadCallback(_RebuildLocaleStrings)
+
+class MapNameShower(ui.ExpandedImageBox):
 
 	STATE_HIDE = 0
 	STATE_FADE_IN = 1
@@ -15,47 +61,6 @@ class MapNameShower(ui.ExpandedImageBox):
 	STATE_FADE_OUT = 3
 
 	def __init__(self):
-		self.MAP_NAME_IMAGE =	{
-						"map_n_snowm_01": LOCALE_PATH + "snow1.tga",
-						"map_n_threeway": LOCALE_PATH + "threeway.tga",
-						"metin2_guild_village_01": LOCALE_PATH + "a4.tga",
-						"metin2_guild_village_02": LOCALE_PATH + "b4.tga",
-						"metin2_guild_village_03": LOCALE_PATH + "c4.tga",
-						"metin2_map_a1": LOCALE_PATH + "a1.tga",
-						"metin2_map_a3": LOCALE_PATH + "a3.tga",
-						"metin2_map_b1": LOCALE_PATH + "b1.tga",
-						"metin2_map_b3": LOCALE_PATH + "b3.tga",
-						"metin2_map_BayBlackSand": LOCALE_PATH + "bay.tga",
-						"metin2_map_c1": LOCALE_PATH + "c1.tga",
-						"metin2_map_c3": LOCALE_PATH + "c3.tga",
-						"Metin2_map_CapeDragonHead": LOCALE_PATH + "cape.tga",
-						"metin2_map_dawnmistwood": LOCALE_PATH + "dawn.tga",
-						"metin2_map_devilsCatacomb": LOCALE_PATH + "devil_basement.tga",
-						"metin2_map_deviltower1": LOCALE_PATH + "devil1_title.tga",
-						"metin2_map_guild_01": LOCALE_PATH + "guild1.tga",
-						"metin2_map_guild_02": LOCALE_PATH + "guild2.tga",
-						"metin2_map_guild_03": LOCALE_PATH + "guild3.tga",
-						"metin2_map_milgyo": LOCALE_PATH + "milgyo.tga",
-						"metin2_map_monkey_dungeon_11": LOCALE_PATH + "monkey1.tga",
-						"metin2_map_monkey_dungeon_12": LOCALE_PATH + "monkey1.tga",
-						"metin2_map_monkey_dungeon_13": LOCALE_PATH + "monkey1.tga",
-						"metin2_map_monkeydungeon_02": LOCALE_PATH + "monkey2.tga",
-						"metin2_map_monkeydungeon_03": LOCALE_PATH + "monkey3.tga",
-						"metin2_map_Mt_Thunder": LOCALE_PATH + "thunder.tga",
-						"metin2_map_n_desert_01": LOCALE_PATH + "desert1.tga",
-						"metin2_map_n_flame_01": LOCALE_PATH + "frame1.tga",
-						"metin2_map_n_flame_dungeon_01": LOCALE_PATH + "frame1.tga",
-						"metin2_map_n_snow_dungeon_01": LOCALE_PATH + "snow1.tga",
-						"metin2_map_skipia_dungeon_01": LOCALE_PATH + "skipia.tga",
-						"metin2_map_skipia_dungeon_02": LOCALE_PATH + "skipia.tga",
-						"metin2_map_skipia_dungeon_boss": LOCALE_PATH + "skipia.tga",
-						"metin2_map_spiderdungeon": LOCALE_PATH + "spider1.tga",
-						"metin2_map_spiderdungeon_02": LOCALE_PATH + "spider1.tga",
-						"metin2_map_spiderdungeon_03": LOCALE_PATH + "spider1.tga",
-						"metin2_map_trent": LOCALE_PATH + "trent.tga",
-						"metin2_map_trent02": LOCALE_PATH + "trent02.tga",
-					}
-
 		ui.ExpandedImageBox.__init__(self, "TOP_MOST")
 		self.AddFlag("not_pick")
 		self.__Initialize()
@@ -92,8 +97,9 @@ class MapNameShower(ui.ExpandedImageBox):
 		elif x > 56000 and y > 38000 and x < 68000 and y < 49000:
 			return 8
 		elif x > 56000 and y > 13000 and x < 68000 and y < 23000:
-			return 9	 
+			return 9
 		return 0
+
 	def __GetDevilBase(self, x, y):
 		if x > 3000 and y > 4500 and x < 45000 and y < 45000:
 			return 1
@@ -109,76 +115,57 @@ class MapNameShower(ui.ExpandedImageBox):
 			return 6
 		elif x > 5000 and y > 104900 and x < 15000 and y < 122000:
 			return 7
-		return	0
+		return 0
+
 	def ShowMapName(self, mapName, x, y):
-		if mapName not in self.MAP_NAME_IMAGE:
+		if mapName not in _MAP_NAME_SUFFIXES:
 			print((" [ERROR] - There is no map name image", mapName))
 			return
 
 		try:
-			self.LoadImage(self.MAP_NAME_IMAGE[mapName])
+			self.LoadImage(LOCALE_PATH + _MAP_NAME_SUFFIXES[mapName])
 		except RuntimeError:
 			return
 
 		self.__Initialize()
 
 		if mapName == "metin2_map_deviltower1":
-			
+			self.SetPosition(-60, 80)
+
 			self.floorImage = ui.ExpandedImageBox()
 			self.floorImage.AddFlag("not_pick")
 			self.floorImage.SetWindowHorizontalAlignCenter()
+			self.floorImage.SetPosition(100, 80)
 			self.floorImage.SetAlpha(0.0)
+			self.floorImage.Show()
 
 			try:
 				floor = self.__GetDevilTowerFloor(x, y)
-				self.floorImage.LoadImage(LOCALE_PATH + "devil1_%df.tga" % floor)
+				print((x, y, floor))
+				self.floorImage.LoadImage(LOCALE_PATH+"devil1_%df.tga" % floor)
 			except RuntimeError:
+				self.SetPosition(0, 80)
+				self.floorImage.Hide()
 				self.floorImage = None
-				return
-
-			mapWidth = self.GetWidth()
-			mapHeight = self.GetHeight()
-			floorWidth = self.floorImage.GetWidth()
-			floorHeight = self.floorImage.GetHeight()
-
-			self.SetPosition(0, 80)
-
-			MARGIN_Y = 5
-			self.floorImage.SetPosition(
-				0,
-				80 + int(mapHeight / 2 + MARGIN_Y)
-			)
-
-			self.floorImage.Show()
 
 		if mapName == "metin2_map_devilsCatacomb":
+			self.SetPosition(-75, 80)
 
 			self.floorImage = ui.ExpandedImageBox()
 			self.floorImage.AddFlag("not_pick")
 			self.floorImage.SetWindowHorizontalAlignCenter()
+			self.floorImage.SetPosition(100, 80)
 			self.floorImage.SetAlpha(0.0)
+			self.floorImage.Show()
 
 			try:
 				floor = self.__GetDevilBase(x, y)
-				self.floorImage.LoadImage(LOCALE_PATH + "devil1_%df.tga" % floor)
+				print((x, y, floor))
+				self.floorImage.LoadImage(LOCALE_PATH+"devil1_%df.tga" % floor)
 			except RuntimeError:
+				self.SetPosition(0, 80)
+				self.floorImage.Hide()
 				self.floorImage = None
-				return
-
-			mapWidth = self.GetWidth()
-			mapHeight = self.GetHeight()
-			floorWidth = self.floorImage.GetWidth()
-			floorHeight = self.floorImage.GetHeight()
-
-			self.SetPosition(0, 80)
-
-			MARGIN_Y = 5
-			self.floorImage.SetPosition(
-				0,
-				80 + int(mapHeight / 2 + MARGIN_Y)
-			)
-
-			self.floorImage.Show()
 
 		self.state = self.STATE_FADE_IN
 		self.fadeStartTime = app.GetTime() + 1.0
@@ -213,8 +200,8 @@ class MapNameShower(ui.ExpandedImageBox):
 				if self.floorImage:
 					self.floorImage.Hide()
 					self.floorImage = None
-					
+
 				if self.objectiveImage:
 					self.objectiveImage.Hide()
-					self.objectiveImage = None					
+					self.objectiveImage = None
 				return
