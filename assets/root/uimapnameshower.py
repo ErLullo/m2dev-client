@@ -130,42 +130,62 @@ class MapNameShower(ui.ExpandedImageBox):
 		self.__Initialize()
 
 		if mapName == "metin2_map_deviltower1":
-			self.SetPosition(-60, 80)
 
 			self.floorImage = ui.ExpandedImageBox()
 			self.floorImage.AddFlag("not_pick")
 			self.floorImage.SetWindowHorizontalAlignCenter()
-			self.floorImage.SetPosition(100, 80)
 			self.floorImage.SetAlpha(0.0)
-			self.floorImage.Show()
 
 			try:
 				floor = self.__GetDevilTowerFloor(x, y)
-				print((x, y, floor))
-				self.floorImage.LoadImage(LOCALE_PATH+"devil1_%df.tga" % floor)
+				self.floorImage.LoadImage(LOCALE_PATH + "devil1_%df.tga" % floor)
 			except RuntimeError:
-				self.SetPosition(0, 80)
-				self.floorImage.Hide()
 				self.floorImage = None
+				return
+
+			mapWidth = self.GetWidth()
+			mapHeight = self.GetHeight()
+			floorWidth = self.floorImage.GetWidth()
+			floorHeight = self.floorImage.GetHeight()
+
+			self.SetPosition(0, 80)
+
+			MARGIN_Y = 5
+			self.floorImage.SetPosition(
+				0,
+				80 + int(mapHeight / 2 + MARGIN_Y)
+			)
+
+			self.floorImage.Show()
 
 		if mapName == "metin2_map_devilsCatacomb":
-			self.SetPosition(-75, 80)
 
 			self.floorImage = ui.ExpandedImageBox()
 			self.floorImage.AddFlag("not_pick")
 			self.floorImage.SetWindowHorizontalAlignCenter()
-			self.floorImage.SetPosition(100, 80)
 			self.floorImage.SetAlpha(0.0)
-			self.floorImage.Show()
 
 			try:
 				floor = self.__GetDevilBase(x, y)
-				print((x, y, floor))
-				self.floorImage.LoadImage(LOCALE_PATH+"devil1_%df.tga" % floor)
+				self.floorImage.LoadImage(LOCALE_PATH + "devil1_%df.tga" % floor)
 			except RuntimeError:
-				self.SetPosition(0, 80)
-				self.floorImage.Hide()
 				self.floorImage = None
+				return
+
+			mapWidth = self.GetWidth()
+			mapHeight = self.GetHeight()
+			floorWidth = self.floorImage.GetWidth()
+			floorHeight = self.floorImage.GetHeight()
+
+			self.SetPosition(0, 80)
+
+			MARGIN_Y = 5
+			self.floorImage.SetPosition(
+				0,
+				80 + int(mapHeight / 2 + MARGIN_Y)
+			)
+
+			self.floorImage.Show()
 
 		self.state = self.STATE_FADE_IN
 		self.fadeStartTime = app.GetTime() + 1.0
