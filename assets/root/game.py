@@ -193,8 +193,9 @@ class GameWindow(ui.ScriptWindow):
 
 		netFieldMusicFileName = net.GetFieldMusicFileName()
 		if netFieldMusicFileName:
-			snd.FadeInMusic("BGM/" + netFieldMusicFileName)
-		elif musicInfo.fieldMusic != "":						
+			musicInfo.fieldMusic = netFieldMusicFileName
+
+		if musicInfo.fieldMusic != "":
 			snd.FadeInMusic("BGM/" + musicInfo.fieldMusic)
 
 		self.__SetQuickSlotMode()
@@ -227,6 +228,7 @@ class GameWindow(ui.ScriptWindow):
 
 		if musicInfo.fieldMusic != "":
 			snd.FadeOutMusic("BGM/" + musicInfo.fieldMusic)
+			musicInfo.fieldMusic = ""
 
 		self.onPressKeyDict = None
 		self.onClickKeyDict = None
