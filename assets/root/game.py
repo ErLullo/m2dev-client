@@ -188,7 +188,6 @@ class GameWindow(ui.ScriptWindow):
 			self.ToggleDebugInfo()
 
 		## Sound
-		snd.SetMusicVolume(systemSetting.GetMusicVolume())
 		snd.SetSoundVolume(systemSetting.GetSoundVolume())
 
 		netFieldMusicFileName = net.GetFieldMusicFileName()
@@ -196,6 +195,8 @@ class GameWindow(ui.ScriptWindow):
 
 		if musicInfo.fieldMusic != "":
 			snd.FadeInMusic("BGM/" + musicInfo.fieldMusic)
+
+		snd.SetMusicVolume(systemSetting.GetMusicVolume())
 
 		self.__SetQuickSlotMode()
 		self.__SelectQuickPage(self.quickSlotPageIndex)
