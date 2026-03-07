@@ -192,8 +192,7 @@ class GameWindow(ui.ScriptWindow):
 		snd.SetSoundVolume(systemSetting.GetSoundVolume())
 
 		netFieldMusicFileName = net.GetFieldMusicFileName()
-		if netFieldMusicFileName:
-			musicInfo.fieldMusic = netFieldMusicFileName
+		musicInfo.fieldMusic = netFieldMusicFileName
 
 		if musicInfo.fieldMusic != "":
 			snd.FadeInMusic("BGM/" + musicInfo.fieldMusic)
